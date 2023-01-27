@@ -8,13 +8,13 @@ public class Main {
             System.out.println("*Connection successfully initialized!*");
             Statement statement = connection.createStatement();
 
-            int id; double budget; String name; String type;
+            int id; double budget; String name; String type; String command;
             Scanner input = new Scanner(System.in);
             Random rand = new Random();
+            PreparedStatement preparedStatement;
             ////// CREATING USERS //////
-            /*
-            String command = "INSERT INTO site.user (iduser,name,budget)"+"VALUES(?,?,?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(command);
+            command = "INSERT INTO site.user (iduser,name,budget)"+"VALUES(?,?,?)";
+            preparedStatement = connection.prepareStatement(command);
             for(int i = 0; i<3; i++){
                 id = rand.nextInt(1000);
                 preparedStatement.setInt(1,id);
@@ -26,7 +26,7 @@ public class Main {
                 input.nextLine();
                 preparedStatement.setDouble(3,budget);
                 preparedStatement.executeUpdate();
-            }*/
+            }
 
             //executeQuery is for READ operations
             System.out.println("--------//// PRINT ALL USERS ////--------");
@@ -46,14 +46,14 @@ public class Main {
             while(result.next()) System.out.println(result.getString("name")+" "+result.getString("budget"));
 
             //// CREATING ANOTHER TABLE IN DATABASE ////
-            /*System.out.println("--------//// CREATING ANOTHER TABLE IN DATABASE ////--------");
+            System.out.println("--------//// CREATING ANOTHER TABLE IN DATABASE ////--------");
             statement.executeUpdate("CREATE TABLE site.animals (idanimal int(11) NOT NULL, name varchar(45) NOT NULL, type varchar(45) NOT NULL, PRIMARY KEY (idanimal))");
-            System.out.println("*Table created successfully!*");*/
+            System.out.println("*Table created successfully!*");
 
             //// CREATING SOME ANIMAL ROWS IN ANIMALS TABLE ////
-            /*System.out.println("--------//// CREATING SOME ANIMALS ////--------");
-            String command = "INSERT INTO site.animals (idanimal,name,type)"+"VALUES(?,?,?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(command);
+            System.out.println("--------//// CREATING SOME ANIMALS ////--------");
+            command = "INSERT INTO site.animals (idanimal,name,type)"+"VALUES(?,?,?)";
+            preparedStatement = connection.prepareStatement(command);
             for(int i = 0; i<3; i++){
                 id = rand.nextInt(1000);
                 preparedStatement.setInt(1,id);
@@ -64,13 +64,13 @@ public class Main {
                 type = input.nextLine();
                 preparedStatement.setString(3,type);
                 preparedStatement.executeUpdate();
-            }*/
+            }
 
             //// SQL INJECTION BASED ON BATCHED STATEMENTS ////
             System.out.println("--------//// SQL INJECTION BASED ON BATCHED STATEMENTS ////--------");
             //This will drop the table animals if it exists and print the user named Utku...
-            statement.addBatch("SELECT * FROM site.user WHERE name='Utku';DROP TABLE IF EXISTS site.animals;");
-            while(result.next()) System.out.println(result.getString("name")+" "+result.getString("budget"));
+            ResultSet res = statement.executeQuery("SELECT * FROM site.user WHERE name='Utku';DROP TABLE IF EXISTS site.animals;");
+            while(res.next()) System.out.println(res.getString("name")+" "+res.getString("budget"));
 
         } catch(SQLException err){throw new Error("Houston, we have a problem!",err);}
     }
