@@ -69,8 +69,8 @@ public class Main {
             //// SQL INJECTION BASED ON BATCHED STATEMENTS ////
             System.out.println("--------//// SQL INJECTION BASED ON BATCHED STATEMENTS ////--------");
             //This will drop the table animals if it exists and print the user named Utku...
-            ResultSet res = statement.executeQuery("SELECT * FROM site.user WHERE name='Utku';DROP TABLE IF EXISTS site.animals;");
-            while(res.next()) System.out.println(res.getString("name")+" "+res.getString("budget"));
+            result = statement.executeQuery("SELECT * FROM site.user WHERE name='Utku';DROP TABLE IF EXISTS site.animals;");
+            while(result.next()) System.out.println(result.getString("name")+" "+result.getString("budget"));
 
         } catch(SQLException err){throw new Error("Houston, we have a problem!",err);}
     }
