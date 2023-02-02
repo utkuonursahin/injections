@@ -1,7 +1,7 @@
 import java.sql.*;
 import java.util.*;
 
-public class Main {
+public class SQLInjection {
     public static void main(String[] args) {
         String db_url = "jdbc:mysql://127.0.0.1:3306/site?allowMultiQueries=true";
         try(Connection connection = DriverManager.getConnection(db_url,"root","test1234")){
