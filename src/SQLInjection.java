@@ -6,12 +6,22 @@ public class SQLInjection {
         String db_url = "jdbc:mysql://127.0.0.1:3306/site?allowMultiQueries=true";
         try(Connection connection = DriverManager.getConnection(db_url,"root","test1234")){
             System.out.println("*Connection successfully initialized!*");
-            Statement statement = connection.createStatement();
 
+            //Defining variables
+            Statement statement = connection.createStatement();
             int id; double budget; String name; String type; String command;
             Scanner input = new Scanner(System.in);
             Random rand = new Random();
             PreparedStatement preparedStatement;
+
+
+            /////// CREATING USER TABLE //////
+            System.out.println("--------//// CREATING USER TABLE ////--------");
+            command = "CREATE TABLE IF NOT EXISTS site.user (iduser int(11) NOT NULL, name varchar(45) NOT NULL, budget double NOT NULL, PRIMARY KEY (iduser))";
+            statement.executeUpdate(command);
+            System.out.println("*Table created successfully!*");
+
+
             ////// CREATING USERS //////
             command = "INSERT INTO site.user (iduser,name,budget)"+"VALUES(?,?,?)";
             preparedStatement = connection.prepareStatement(command);
@@ -45,9 +55,10 @@ public class SQLInjection {
             //This will select all users and print the same result as above lines...
             while(result.next()) System.out.println(result.getString("name")+" "+result.getString("budget"));
 
-            //// CREATING ANOTHER TABLE IN DATABASE ////
-            System.out.println("--------//// CREATING ANOTHER TABLE IN DATABASE ////--------");
-            statement.executeUpdate("CREATE TABLE site.animals (idanimal int(11) NOT NULL, name varchar(45) NOT NULL, type varchar(45) NOT NULL, PRIMARY KEY (idanimal))");
+            //// CREATING ANIMALS TABLE IN DATABASE ////
+            System.out.println("--------//// CREATING ANIMALS TABLE IN DATABASE ////--------");
+            command = "CREATE TABLE site.animals (idanimal int(11) NOT NULL, name varchar(45) NOT NULL, type varchar(45) NOT NULL, PRIMARY KEY (idanimal))";
+            statement.executeUpdate(command);
             System.out.println("*Table created successfully!*");
 
             //// CREATING SOME ANIMAL ROWS IN ANIMALS TABLE ////
